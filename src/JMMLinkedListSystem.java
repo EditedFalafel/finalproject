@@ -92,7 +92,7 @@ class CustomerOrder {
     }
 }
 
-public class JEMMLinkedListSystem {
+public class JMMLinkedListSystem {
     private static List<MenuItem> menu = new ArrayList<>();
 
     // DO NOT TOUCH THIS IS HELD TOGETHER WITH DREAMS AND THE SONGS HAPPY FAMILY AND LUNAR IS HERE
@@ -115,7 +115,6 @@ public class JEMMLinkedListSystem {
     }
 
     public static void main(String[] args) {
-        // Initializes the file reading process
         loadMenuFromFile("C:\\Users\\User\\IdeaProjects\\untitled29\\src\\Menu Sample.txt"); //replace test menu with real menu pls
         Scanner scanner = new Scanner(System.in);
 
