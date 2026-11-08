@@ -1,0 +1,16 @@
+Jewel Strawberry Jelly, 5, 165.00
+Jewel Roll Cake, 10, 185.00
+Jewel Sugar Cookie, 3, 125.00
+Jewel Sandwich Cookies (Set of 4), 5, 320.00
+Vimmy Honey Choco, 5, 165.00
+Vimmy Roll Cake, 10, 185.00
+Vimmy Sugar Cookie, 3, 125.00
+Vimmy Sandwich Cookies (Set of 4), 5, 320.00
+Muvmuv Coconut Thai Tea, 5, 165.00
+Muvmuv Roll Cake, 10, 185.00
+Muvmuv Sugar Cookie, 3, 125.00
+Muvmuv Sandwich Cookies (Set of 4), 5, 320.00
+Any Lychee Sparkling, 5, 135.00
+Any Roll Cake, 10, 185.00
+Any Sugar Cookie, 3, 125.00
+Any Sandwich Cookies (Set of 4), 5, 320.00
