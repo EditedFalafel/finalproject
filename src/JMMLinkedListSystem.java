@@ -93,7 +93,7 @@ class CustomerOrder {
 }
 
 public class JMMLinkedListSystem {
-    private static List<MenuItem> menu = new ArrayList<>();
+    private static List<MenuItem> menu = new FoodMenu().getMenu();
 
     // DO NOT TOUCH THIS IS HELD TOGETHER WITH DREAMS AND THE SONGS HAPPY FAMILY AND LUNAR IS HERE
     public static void loadMenuFromFile(String filePath) {
@@ -115,7 +115,7 @@ public class JMMLinkedListSystem {
     }
 
     public static void main(String[] args) {
-        loadMenuFromFile("C:\\Users\\User\\IdeaProjects\\untitled29\\src\\Menu Sample.txt"); //replace test menu with real menu pls
+        //replace test menu with real menu pls
         Scanner scanner = new Scanner(System.in);
 
         CustomerOrder currentOrder = new CustomerOrder();
