@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 
-public class Menu {
+class RestaurantMenu {
 
     // DO NOT TOUCH THIS IS HELD TOGETHER WITH DREAMS AND THE SONGS HAPPY FAMILY AND LUNAR IS HERE
     public List<MenuItem> loadMenuFromFile(String filePath) {
@@ -33,7 +33,6 @@ public class Menu {
     public void Main() {
         //replace test menu with real menu pls
         File folder = new File("src/MenuCategories");
-
         File[] categories = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
 
         Scanner scanner = new Scanner(System.in);
@@ -41,17 +40,14 @@ public class Menu {
 
         System.out.println("Welcome to the JMM House Ordering System!");
 
-        boolean ordering = true;
-        while (ordering) {
-            boolean incategory = true;
-
+        while (true) {
             int categoryChoice = -1;
             do {
                 System.out.println("\n--- Menu ---");
                 for (int i = 0; i < categories.length; i++) {
                     System.out.println("[" + (i + 1) + "] " + categories[i].getName().replace(".txt", ""));
                 }
-                System.out.println("[0] Exit");
+                System.out.println("[0] Finish");
 
                 System.out.print("Select a category: ");
                 categoryChoice = scanner.nextInt();
@@ -65,7 +61,7 @@ public class Menu {
 
             System.out.println();
 
-            int foodChoice = -1;
+            int foodChoice;
             for (int i = 0; i < menu.size(); i++) {
                 MenuItem item = menu.get(i);
                 System.out.printf("[%d] %s - %.2f mins - Php%.2f\n", i + 1, item.getName(), item.getCookTime(), item.getPrice());
@@ -90,11 +86,25 @@ public class Menu {
         }
 
         currentOrder.displayOrderSummary();
+        while(true) {
+            System.out.print("Press 1 to confirm order, 0 to retry: ");
+            int confirm = scanner.nextInt();
+
+            if (confirm == 1) {
+                break;
+            } else if (confirm == 0){
+                currentOrder.cancelOrder();
+                Main();
+                break;
+            } else {
+                System.out.println("Invalid selection. Please try again.");
+            }
+        }
         scanner.close();
     }
 
     public static void main(String[] args) {
-        Menu m = new Menu();
+        RestaurantMenu m = new RestaurantMenu();
         m.Main();
     }
 }
