@@ -1,8 +1,19 @@
-public class MenuItem extends Food {
+public class MenuItem {
     private double price;
+    private String name;
+    private double cookTime;
+    private String[] customizableIngredients;
 
-    public MenuItem(String name, double price, double cookTime, String[] ingredients) {
-        super(name, cookTime, ingredients);
+    public MenuItem(String name, double price,  double cookTime, String[] ingredients) {
+        this.name = name;
+        this.cookTime = cookTime;
+        this.price = price;
+        this.customizableIngredients = ingredients;
+    }
+
+    public MenuItem(String name, double price, double cookTime) {
+        this.name = name;
+        this.cookTime = cookTime;
         this.price = price;
     }
 
