@@ -44,7 +44,7 @@ public class FoodMenu {
 
     // adds item and its add-ons
     private void add(String name, double price, int cookTime, String[] extras) {
-        menu.add(new MenuItem(name, price, cookTime));
+        menu.add(new MenuItem(name, price, cookTime, extras));
         addOns.add(extras);
     }
 

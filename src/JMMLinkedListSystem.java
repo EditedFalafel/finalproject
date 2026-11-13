@@ -1,9 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 class FoodItemNode {
     String itemName;
     double cookTime;
@@ -71,7 +65,7 @@ class CustomerOrder {
             return;
         }
         while (current != null) {
-            System.out.printf("- %s (Cook time: %.2f mins, $%.2f)\n", current.itemName, current.cookTime, current.price);
+            System.out.printf("- %s (Cook time: %.2f mins, Php%.2f)\n", current.itemName, current.cookTime, current.price);
             current = current.next;
         }
         System.out.println("-----------------------------------");

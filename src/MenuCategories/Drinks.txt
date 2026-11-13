@@ -1,0 +1,6 @@
+Coke; 40.00; 1; {Ice}
+Sprite; 40.00; 1; {Ice}
+Iced Tea; 35.00; 1; {Ice, Sugar}
+Hot Coffee; 40.00; 3; {Sugar, Creamer, Milk, Espresso Shot}
+Iced Coffee; 45.00; 2; {Ice, Sugar, Creamer, Milk, Espresso Shot}
+Chocolate Shake; 55.25; 3; {Whipped Cream}

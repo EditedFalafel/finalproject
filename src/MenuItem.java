@@ -11,12 +11,6 @@ public class MenuItem {
         this.customizableIngredients = ingredients;
     }
 
-    public MenuItem(String name, double price, double cookTime) {
-        this.name = name;
-        this.cookTime = cookTime;
-        this.price = price;
-    }
-
     public String getName() {
         return name;
     }

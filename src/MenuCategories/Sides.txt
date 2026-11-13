@@ -1,0 +1,5 @@
+Regular Fries; 60.00; 4; {Cheese Flavor, BBQ Flavor, Sour Cream Flavor}
+Large Fries; 75.00; 5; {Cheese Flavor, BBQ Flavor, Sour Cream Flavor}
+Mac n Cheese; 90.00; 6; {Extra Cheese}
+Mozzarella Sticks; 115.50; 6; {Dip Sauce, Cheese Flavor, BBQ Flavor, Sour Cream Flavor}
+Onion Rings; 70.00; 5; {Dip Sauce}
