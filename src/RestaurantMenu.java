@@ -31,12 +31,16 @@ class RestaurantMenu {
     }
 
     public void Main() {
+        CustomerOrder currentOrder = new CustomerOrder();
+        Menu(currentOrder);
+    }
+
+    public void Menu(CustomerOrder currentOrder) {
         //replace test menu with real menu pls
         File folder = new File("src/MenuCategories");
         File[] categories = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
 
         Scanner scanner = new Scanner(System.in);
-        CustomerOrder currentOrder = new CustomerOrder();
 
         System.out.println("Welcome to the JMM House Ordering System!");
 
@@ -93,8 +97,7 @@ class RestaurantMenu {
             if (confirm == 1) {
                 break;
             } else if (confirm == 0){
-                currentOrder.cancelOrder();
-                Main();
+                Menu(currentOrder);
                 break;
             } else {
                 System.out.println("Invalid selection. Please try again.");

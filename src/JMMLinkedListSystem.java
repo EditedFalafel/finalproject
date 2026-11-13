@@ -35,10 +35,6 @@ class CustomerOrder {
         }
     }
 
-    public void cancelOrder() {
-        customerCounter--;
-    }
-
     // math for serving time
     public double getTotalCookTime() {
         double total = 0;
