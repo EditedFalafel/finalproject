@@ -78,7 +78,7 @@ public class FoodMenu {
     }
 
     // customer picks add-ons for an item, 0 means done or no add-ons
-    public static String chooseAddOns(Scanner scanner, MenuItem item) {
+    public static String chooseAddOns(MenuItem item) {
         String[] extras = item.getIngredients();
         ArrayList<String> chosen = new ArrayList<>();
 
@@ -87,18 +87,23 @@ public class FoodMenu {
         }
 
         while (true) {
-            System.out.println("\nAdd-ons for " + item.getName() + ":");
+            ScreenDisplay.clear();
+            ScreenDisplay.boxTop("ADD-ONS");
+            ScreenDisplay.boxCentered(item.getName());
+            ScreenDisplay.boxSeparator();
             for (int i = 0; i < extras.length; i++) {
-                String mark = "";
+                String mark = "[ ]";
                 if (chosen.contains(extras[i])) {
-                    mark = " (added)";
+                    mark = "[x]";
                 }
-                System.out.println("[" + (i + 1) + "] " + extras[i] + mark);
+                ScreenDisplay.boxText("[" + (i + 1) + "] " + mark + " " + extras[i]);
             }
-            System.out.println("[0] Done / No add-ons");
-            System.out.print("Select an add-on: ");
+            ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxText("[0] Done / No add-ons");
+            ScreenDisplay.boxBottom();
+            ScreenDisplay.print("(select an add-on again to remove it)");
 
-            int choice = scanner.nextInt();
+            int choice = ScreenDisplay.readInt("Select:", 0, extras.length);
 
             if (choice == 0) {
                 break;
@@ -108,13 +113,9 @@ public class FoodMenu {
                 // picking it again removes it
                 if (chosen.contains(picked)) {
                     chosen.remove(picked);
-                    System.out.println(picked + " removed.");
                 } else {
                     chosen.add(picked);
-                    System.out.println(picked + " added.");
                 }
-            } else {
-                System.out.println("Invalid selection. Please try again.");
             }
         }
 
