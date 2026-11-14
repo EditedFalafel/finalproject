@@ -2,12 +2,14 @@ class FoodItemNode {
     String itemName;
     double cookTime;
     double price;
+    String addOns;
     FoodItemNode next;
 
     public FoodItemNode(String itemName, double cookTime, double price) {
         this.itemName = itemName;
         this.cookTime = cookTime;
         this.price = price;
+        this.addOns = "";
         this.next = null;
     }
 }
@@ -33,6 +35,16 @@ class CustomerOrder {
             }
             current.next = newNode;
         }
+    }
+
+    // Adds order with chosen add-ons
+    public void addFoodItem(MenuItem item, String addOns) {
+        addFoodItem(item);
+        FoodItemNode current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.addOns = addOns;
     }
 
     // math for serving time
@@ -66,6 +78,9 @@ class CustomerOrder {
         }
         while (current != null) {
             System.out.printf("- %s (Cook time: %.2f mins, Php%.2f)\n", current.itemName, current.cookTime, current.price);
+            if (!current.addOns.isEmpty()) {
+                System.out.println("    Add-ons: " + current.addOns);
+            }
             current = current.next;
         }
         System.out.println("-----------------------------------");
