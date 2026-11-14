@@ -1,4 +1,6 @@
 public class Tree {
+    TreeNode root;
+
     class TreeNode {
         TreeNode left;
         TreeNode right;
@@ -14,7 +16,6 @@ public class Tree {
         }
     }
 
-    TreeNode root;
     public Tree() {
         root = null;
     }

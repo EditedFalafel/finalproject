@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class ScreenDisplay {
     // change this if off-center
     public static int SCREEN_WIDTH = detectWidth();
-    public static final int INNER = 58; // box width
+    public static final int INNER = 64; // box width
     private static final Scanner in = new Scanner(System.in);
 
     private static int detectWidth() {

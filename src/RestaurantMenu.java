@@ -189,6 +189,8 @@ class RestaurantMenu {
         ScreenDisplay.boxCentered("Thank you for ordering at JMM House!");
         ScreenDisplay.boxBottom();
         ScreenDisplay.pause();
+
+
     }
 
     public static void main(String[] args) {
