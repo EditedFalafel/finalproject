@@ -16,11 +16,37 @@ class FoodItemNode {
 
 class CustomerOrder {
     private FoodItemNode head;
-    public int customerId;
+    public int customerId; // 0 until confirmed
     private static int customerCounter = 1;
 
     public CustomerOrder() {
-        this.customerId = customerCounter++;
+        this.customerId = 0;
+    }
+
+    // gives ticket number
+    public void assignTicketNumber() {
+        if (customerId == 0) {
+            customerId = customerCounter++;
+        }
+    }
+
+    // head of the list
+    public FoodItemNode getHead() {
+        return head;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public int getItemCount() {
+        int count = 0;
+        FoodItemNode current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
     }
 
     // Adds order
@@ -47,6 +73,26 @@ class CustomerOrder {
         current.addOns = addOns;
     }
 
+    // removes item (starts at 1)
+    public boolean removeItem(int number) {
+        if (head == null || number < 1) {
+            return false;
+        }
+        if (number == 1) {
+            head = head.next;
+            return true;
+        }
+        FoodItemNode current = head;
+        for (int i = 1; i < number - 1 && current != null; i++) {
+            current = current.next;
+        }
+        if (current == null || current.next == null) {
+            return false;
+        }
+        current.next = current.next.next;
+        return true;
+    }
+
     // math for serving time
     public double getTotalCookTime() {
         double total = 0;
@@ -69,22 +115,8 @@ class CustomerOrder {
         return total;
     }
 
-    public void displayOrderSummary() {
-        System.out.println("\n--- Order Summary (Ticket #" + customerId + ") ---");
-        FoodItemNode current = head;
-        if (current == null) {
-            System.out.println("No items ordered.");
-            return;
-        }
-        while (current != null) {
-            System.out.printf("- %s (Cook time: %.2f mins, Php%.2f)\n", current.itemName, current.cookTime, current.price);
-            if (!current.addOns.isEmpty()) {
-                System.out.println("    Add-ons: " + current.addOns);
-            }
-            current = current.next;
-        }
-        System.out.println("-----------------------------------");
-        System.out.printf("Total Amount: Php%.2f\n", getTotalPrice());
-        System.out.println("Estimated Total Waiting Time: " + getTotalCookTime() + " mins");
+    @Override
+    public String toString() {
+        return "Order #" + customerId;
     }
 }
