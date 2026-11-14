@@ -37,8 +37,8 @@ class RestaurantMenu {
 
     public void Menu(CustomerOrder currentOrder) {
         //replace test menu with real menu pls
-        File folder = new File("src/MenuCategories");
-        File[] categories = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
+        FoodMenu foodMenu = new FoodMenu();
+        String[] categories = foodMenu.getCategoryNames();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -49,7 +49,7 @@ class RestaurantMenu {
             do {
                 System.out.println("\n--- Menu ---");
                 for (int i = 0; i < categories.length; i++) {
-                    System.out.println("[" + (i + 1) + "] " + categories[i].getName().replace(".txt", ""));
+                    System.out.println("[" + (i + 1) + "] " + categories[i]);
                 }
                 System.out.println("[0] Finish");
 
@@ -61,7 +61,7 @@ class RestaurantMenu {
                 break;
             }
 
-            List<MenuItem> menu = loadMenuFromFile(categories[categoryChoice-1].toString());
+            List<MenuItem> menu = foodMenu.getItems(categoryChoice - 1);
 
             System.out.println();
 
@@ -82,7 +82,8 @@ class RestaurantMenu {
                 MenuItem selectedItem = menu.get(foodChoice - 1);
 
 
-                currentOrder.addFoodItem(selectedItem);
+                String addOns = FoodMenu.chooseAddOns(scanner, selectedItem);
+                currentOrder.addFoodItem(selectedItem, addOns);
                 System.out.println(selectedItem.getName() + " added to your order.");
             } else {
                 System.out.println("Invalid selection. Please try again.");
