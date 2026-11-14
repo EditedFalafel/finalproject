@@ -114,11 +114,33 @@ class RestaurantMenu {
 
         MenuItem selectedItem = items.get(foodChoice - 1);
         String addOns = FoodMenu.chooseAddOns(selectedItem);
-        currentOrder.addFoodItem(selectedItem, addOns);
-        return "Added " + selectedItem.getName();
+        int quantity = chooseQuantity(selectedItem);
+
+        if (quantity == 0) {
+            return "";
+        }
+
+        for (int i = 0; i < quantity; i++) {
+            currentOrder.addFoodItem(selectedItem, addOns);
+        }
+
+        return "Added " + quantity + "x " + selectedItem.getName();
     }
 
-    // true if order is done
+    // Quantity
+    private int chooseQuantity(MenuItem item) {
+        ScreenDisplay.clear();
+        ScreenDisplay.boxTop("QUANTITY");
+        ScreenDisplay.boxCentered(item.getName());
+        ScreenDisplay.boxRow("Unit Price:", ScreenDisplay.money(item.getPrice())); 
+        ScreenDisplay.boxSeparator();
+        ScreenDisplay.boxText("[0] Cancel item"); //NAMTAN RAGEBAITER
+        ScreenDisplay.boxBottom();
+
+        return ScreenDisplay.readInt("Enter quantity:", 0, 99); //Napipikon ako 
+    }
+
+
     private boolean reviewOrder(CustomerOrder order) {
         while (true) {
             ScreenDisplay.clear();
