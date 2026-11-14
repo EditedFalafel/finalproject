@@ -1,0 +1,2 @@
+Sundae; 72.55; 2; {Chocolate Syrup}
+Apple Pie; 65.50; 4; {}

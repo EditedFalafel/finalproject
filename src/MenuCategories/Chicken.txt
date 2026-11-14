@@ -1,0 +1,4 @@
+Fried Chicken Meal; 99.00; 15; {Gravy, Rice}
+Spicy Chicken Meal; 105.00; 15; {Gravy, Rice}
+Chicken Tenders (4 pcs.); 95.25; 8; {Dip Sauce}
+Chicken Nuggets (5 pcs.); 110.00; 7; {Dip Sauce}

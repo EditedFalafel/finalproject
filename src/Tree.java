@@ -1,15 +1,13 @@
-package Tree;
-
 public class Tree {
     class TreeNode {
         TreeNode left;
         TreeNode right;
-        String data;
+        CustomerOrder data;
         TreeNode(){
             left = null;
             right = null;
         }
-        TreeNode(String data) {
+        TreeNode(CustomerOrder data) {
             left = null;
             right = null;
             this.data = data;
@@ -23,16 +21,8 @@ public class Tree {
     boolean isEmpty() {
         return root == null;
     }
-    void insert (String d) {
+    void insert (CustomerOrder d) {
         root = insertRec(root, d);
-    }
-
-    int WordToAsciiValue(String word) {
-        int val = 0;
-        for(char c : word.toCharArray()) {
-            val += (int) c;
-        }
-        return val;
     }
 
     private int height(TreeNode node) {
@@ -76,14 +66,14 @@ public class Tree {
         return y;
     }
 
-    TreeNode insertRec (TreeNode root, String d) {
+    TreeNode insertRec (TreeNode root, CustomerOrder d) {
         if (root == null) {
             return new TreeNode(d);
         }
 
-        if (WordToAsciiValue(d) < WordToAsciiValue(root.data)) {
+        if (d.getTotalCookTime() < root.data.getTotalCookTime()) {
             root.left = insertRec(root.left, d);
-        } else if (WordToAsciiValue(d) > WordToAsciiValue(root.data)) {
+        } else if (d.getTotalCookTime() > root.data.getTotalCookTime()) {
             root.right = insertRec(root.right, d);
         } else {
             return root;
@@ -91,20 +81,20 @@ public class Tree {
 
         int balance = getBalance(root);
 
-        if (balance > 1 && WordToAsciiValue(d) < WordToAsciiValue(root.left.data)) {
+        if (balance > 1 && d.getTotalCookTime() < root.left.data.getTotalCookTime()) {
             return rightRotate(root);
         }
 
-        if (balance < -1 && WordToAsciiValue(d) > WordToAsciiValue(root.right.data)) {
+        if (balance < -1 && d.getTotalCookTime() > root.right.data.getTotalCookTime()) {
             return leftRotate(root);
         }
 
-        if (balance > 1 && WordToAsciiValue(d) > WordToAsciiValue(root.left.data)) {
+        if (balance > 1 && d.getTotalCookTime() > root.left.data.getTotalCookTime()) {
             root.left = leftRotate(root.left);
             return rightRotate(root);
         }
 
-        if (balance < -1 && WordToAsciiValue(d) < WordToAsciiValue(root.right.data)) {
+        if (balance < -1 && d.getTotalCookTime() < root.right.data.getTotalCookTime()) {
             root.right = rightRotate(root.right);
             return leftRotate(root);
         }
@@ -112,16 +102,8 @@ public class Tree {
         return root;
     }
 
-    void preorder() {
-        preorderRec(root);
-    }
-
     void inorder(){
         inorderRec(root);
-    }
-
-    void postorder() {
-        postorderRec(root);
     }
 
     void inorderRec(TreeNode root) {
@@ -129,28 +111,6 @@ public class Tree {
             inorderRec(root.left);
             System.out.print(root.data + " ");
             inorderRec(root.right);
-        }
-    }
-
-    void preorderRec(TreeNode root) {
-        if (root != null) {
-            /* first print data of node */
-            System.out.print(root.data + " ");
-            /* then recur on left subtree */
-            preorderRec(root.left);
-            /* now recur on right subtree */
-            preorderRec(root.right);
-        }
-    }
-
-    void postorderRec(TreeNode root) {
-        if (root != null) {
-            /* then recur on left subtree */
-            postorderRec(root.left);
-            /* now recur on right subtree */
-            postorderRec(root.right);
-            /* first print data of node */
-            System.out.print(root.data + " ");
         }
     }
 
@@ -166,7 +126,7 @@ public class Tree {
         if (node != null) {
             String branch = "+--";
 
-            System.out.println(prefix + branch + node.data + " (" + WordToAsciiValue(node.data) + ")");
+            System.out.println(prefix + branch + node.data + " (" + node.data.getTotalCookTime() + ")");
 
             String childPrefix;
             childPrefix = prefix + "    ";

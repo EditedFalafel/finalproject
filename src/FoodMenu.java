@@ -44,7 +44,7 @@ public class FoodMenu {
 
     // adds item and its add-ons
     private void add(String name, double price, int cookTime, String[] extras) {
-        menu.add(new MenuItem(name, cookTime, price));
+        menu.add(new MenuItem(name, price, cookTime, extras));
         addOns.add(extras);
     }
 
@@ -76,9 +76,9 @@ public class FoodMenu {
 
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.get(i);
-            System.out.println((i + 1) + ". " + item.name);
-            System.out.printf("   Price: Php %.2f%n", item.price);
-            System.out.println("   Cook time: " + item.cookTime + " min");
+            System.out.println((i + 1) + ". " + item.getName());
+            System.out.printf("   Price: Php %.2f%n", item.getPrice());
+            System.out.println("   Cook time: " + item.getCookTime() + " min");
 
             String[] extras = addOns.get(i);
             if (extras.length > 0) {
