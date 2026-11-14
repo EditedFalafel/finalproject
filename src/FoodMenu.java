@@ -1,13 +1,18 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class FoodMenu {
     ArrayList<MenuItem> menu = new ArrayList<>();
     ArrayList<String[]> addOns = new ArrayList<>();   // same order as menu
+    ArrayList<String> categoryNames = new ArrayList<>();
+    ArrayList<ArrayList<MenuItem>> categories = new ArrayList<>();
 
 
 
     public FoodMenu() {
         // burgers
+        newCategory("Burgers");
         add("Classic Burger", 120.00, 8, new String[]{"Pickles", "Onions", "Cheese", "Tomatoes", "Lettuce", "Extra Patty", "Special Sauce"});
         add("Cheeseburger", 135.50, 8, new String[]{"Pickles", "Onions", "Cheese", "Tomatoes", "Lettuce", "Extra Patty", "Special Sauce"});
         add("Double Cheeseburger", 150.00, 10, new String[]{"Pickles", "Onions", "Cheese", "Tomatoes", "Lettuce", "Extra Patty", "Special Sauce"});
@@ -16,12 +21,14 @@ public class FoodMenu {
 
 
         // chicken
+        newCategory("Chicken");
         add("Fried Chicken Meal", 99.00, 15, new String[]{"Gravy", "Rice"});
         add("Spicy Chicken Meal", 105.00, 15, new String[]{"Gravy", "Rice"});
         add("Chicken Tenders (4 pcs.)", 95.25, 8, new String[]{"Dip Sauce"});
         add("Chicken Nuggets (5 pcs.)", 110.00, 7, new String[]{"Dip Sauce"});
 
         // sides
+        newCategory("Sides");
         add("Regular Fries", 60.00, 4, new String[]{"Cheese Flavor", "BBQ Flavor", "Sour Cream Flavor"});
         add("Large Fries", 75.00, 5, new String[]{"Cheese Flavor", "BBQ Flavor", "Sour Cream Flavor"});
         add("Mac n Cheese", 90.00, 6, new String[]{"Extra Cheese"});
@@ -29,6 +36,7 @@ public class FoodMenu {
         add("Onion Rings", 70.00, 5, new String[]{"Dip Sauce"});
 
         // drinks
+        newCategory("Drinks");
         add("Coke", 40.00, 1, new String[]{"Ice"});
         add("Sprite", 40.00, 1, new String[]{"Ice"});
         add("Iced Tea", 35.00, 1, new String[]{"Ice", "Sugar"});
@@ -37,6 +45,7 @@ public class FoodMenu {
         add("Chocolate Shake", 55.25, 3, new String[]{"Whipped Cream"});
 
         // desserts
+        newCategory("Desserts");
         add("Sundae", 72.55, 2, new String[]{"Chocolate Syrup"});
         add("Apple Pie", 65.50, 4, new String[]{});
     }
@@ -44,12 +53,72 @@ public class FoodMenu {
 
     // adds item and its add-ons
     private void add(String name, double price, int cookTime, String[] extras) {
-        menu.add(new MenuItem(name, price, cookTime, extras));
+        MenuItem item = new MenuItem(name, price, cookTime, extras);
+        menu.add(item);
         addOns.add(extras);
+        categories.get(categories.size() - 1).add(item);
+    }
+
+    private void newCategory(String name) {
+        categoryNames.add(name);
+        categories.add(new ArrayList<>());
     }
 
     public ArrayList<MenuItem> getMenu() {
         return menu;
+    }
+
+    public String[] getCategoryNames() {
+        return categoryNames.toArray(new String[0]);
+    }
+
+    // category number starts at 0
+    public List<MenuItem> getItems(int categoryIndex) {
+        return categories.get(categoryIndex);
+    }
+
+    // customer picks add-ons for an item, 0 means done or no add-ons
+    public static String chooseAddOns(Scanner scanner, MenuItem item) {
+        String[] extras = item.getIngredients();
+        ArrayList<String> chosen = new ArrayList<>();
+
+        if (extras == null || extras.length == 0) {
+            return "";
+        }
+
+        while (true) {
+            System.out.println("\nAdd-ons for " + item.getName() + ":");
+            for (int i = 0; i < extras.length; i++) {
+                String mark = "";
+                if (chosen.contains(extras[i])) {
+                    mark = " (added)";
+                }
+                System.out.println("[" + (i + 1) + "] " + extras[i] + mark);
+            }
+            System.out.println("[0] Done / No add-ons");
+            System.out.print("Select an add-on: ");
+
+            int choice = scanner.nextInt();
+
+            if (choice == 0) {
+                break;
+            } else if (choice > 0 && choice <= extras.length) {
+                String picked = extras[choice - 1];
+
+                // picking it again removes it
+                if (chosen.contains(picked)) {
+                    chosen.remove(picked);
+                    System.out.println(picked + " removed.");
+                } else {
+                    chosen.add(picked);
+                    System.out.println(picked + " added.");
+                }
+            } else {
+                System.out.println("Invalid selection. Please try again.");
+            }
+        }
+
+        return String.join(", ", chosen);
     }
 
     // number starts at 1
