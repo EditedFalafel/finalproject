@@ -85,6 +85,7 @@ class RestaurantMenu {
                 String addOns = FoodMenu.chooseAddOns(scanner, selectedItem);
                 currentOrder.addFoodItem(selectedItem, addOns);
                 System.out.println(selectedItem.getName() + " added to your order.");
+                System.out.printf("Total cooking time so far: %.2f mins\n", currentOrder.getTotalCookTime());
             } else {
                 System.out.println("Invalid selection. Please try again.");
             }
