@@ -31,81 +31,164 @@ class RestaurantMenu {
     }
 
     public void Main() {
-        CustomerOrder currentOrder = new CustomerOrder();
-        Menu(currentOrder);
-    }
-
-    public void Menu(CustomerOrder currentOrder) {
         //replace test menu with real menu pls
         FoodMenu foodMenu = new FoodMenu();
-        String[] categories = foodMenu.getCategoryNames();
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Welcome to the JMM House Ordering System!");
 
         while (true) {
-            int categoryChoice = -1;
-            do {
-                System.out.println("\n--- Menu ---");
-                for (int i = 0; i < categories.length; i++) {
-                    System.out.println("[" + (i + 1) + "] " + categories[i]);
-                }
-                System.out.println("[0] Finish");
+            ScreenDisplay.clear();
+            ScreenDisplay.boxTop("J M M   H O U S E");
+            ScreenDisplay.boxGap();
+            ScreenDisplay.boxCentered("Welcome to the JMM House");
+            ScreenDisplay.boxCentered("Ordering System");
+            ScreenDisplay.boxGap();
+            ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxText("[1] Start a new order");
+            ScreenDisplay.boxText("[0] Exit");
+            ScreenDisplay.boxBottom();
 
-                System.out.print("Select a category: ");
-                categoryChoice = scanner.nextInt();
-            } while (categoryChoice > categories.length);
+            int choice = ScreenDisplay.readInt("Select:", 0, 1);
+
+            if (choice == 1) {
+                Menu(new CustomerOrder(), foodMenu);
+            } else {
+                ScreenDisplay.blank();
+                ScreenDisplay.print("Thank you! See you again at JMM House.");
+                ScreenDisplay.blank();
+                return;
+            }
+
+        }
+    }
+
+    // customer ordering screens
+    public void Menu(CustomerOrder currentOrder, FoodMenu foodMenu) {
+        String[] categories = foodMenu.getCategoryNames();
+        String message = "";
+
+        while (true) {
+            ScreenDisplay.clear();
+            ScreenDisplay.boxTop("MENU");
+            for (int i = 0; i < categories.length; i++) {
+                ScreenDisplay.boxText("[" + (i + 1) + "] " + categories[i]);
+            }
+            ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxText("[0] Review order / Checkout");
+            ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxRow("Items in order: " + currentOrder.getItemCount(), ScreenDisplay.money(currentOrder.getTotalPrice()));
+            ScreenDisplay.boxRow(message, "Est. " + ScreenDisplay.time(currentOrder.getTotalCookTime()));
+            ScreenDisplay.boxBottom();
+
+            int categoryChoice = ScreenDisplay.readInt("Select a category:", 0, categories.length);
 
             if (categoryChoice == 0) {
-                break;
-            }
-
-            List<MenuItem> menu = foodMenu.getItems(categoryChoice - 1);
-
-            System.out.println();
-
-            int foodChoice;
-            for (int i = 0; i < menu.size(); i++) {
-                MenuItem item = menu.get(i);
-                System.out.printf("[%d] %s - %.2f mins - Php%.2f\n", i + 1, item.getName(), item.getCookTime(), item.getPrice());
-            }
-            System.out.println("[0] Back");
-
-            System.out.print("Select an item to add to your order: ");
-
-            foodChoice = scanner.nextInt();
-
-            if (foodChoice == 0) {
+                if (reviewOrder(currentOrder)) {
+                    return;
+                }
+                message = "";
                 continue;
-            } else if (foodChoice > 0 && foodChoice <= menu.size()) {
-                MenuItem selectedItem = menu.get(foodChoice - 1);
-
-
-                String addOns = FoodMenu.chooseAddOns(scanner, selectedItem);
-                currentOrder.addFoodItem(selectedItem, addOns);
-                System.out.println(selectedItem.getName() + " added to your order.");
-                System.out.printf("Total cooking time so far: %.2f mins\n", currentOrder.getTotalCookTime());
-            } else {
-                System.out.println("Invalid selection. Please try again.");
             }
+
+            message = chooseItem(foodMenu, categoryChoice - 1, currentOrder);
+        }
+    }
+
+    // shows items of category
+    private String chooseItem(FoodMenu foodMenu, int categoryIndex, CustomerOrder currentOrder) {
+        String[] categories = foodMenu.getCategoryNames();
+        List<MenuItem> items = foodMenu.getItems(categoryIndex);
+
+        ScreenDisplay.clear();
+        ScreenDisplay.boxTop(categories[categoryIndex].toUpperCase());
+        for (int i = 0; i < items.size(); i++) {
+            MenuItem item = items.get(i);
+            ScreenDisplay.boxRow("[" + (i + 1) + "] " + item.getName(), ScreenDisplay.time(item.getCookTime()) + "  " + ScreenDisplay.money(item.getPrice()));
+        }
+        ScreenDisplay.boxSeparator();
+        ScreenDisplay.boxText("[0] Back");
+        ScreenDisplay.boxBottom();
+
+        int foodChoice = ScreenDisplay.readInt("Select an item:", 0, items.size());
+        if (foodChoice == 0) {
+            return "";
         }
 
-        currentOrder.displayOrderSummary();
-        while(true) {
-            System.out.print("Press 1 to confirm order, 0 to retry: ");
-            int confirm = scanner.nextInt();
+        MenuItem selectedItem = items.get(foodChoice - 1);
+        String addOns = FoodMenu.chooseAddOns(selectedItem);
+        currentOrder.addFoodItem(selectedItem, addOns);
+        return "Added " + selectedItem.getName();
+    }
 
-            if (confirm == 1) {
-                break;
-            } else if (confirm == 0){
-                Menu(currentOrder);
-                break;
+    // true if order is done
+    private boolean reviewOrder(CustomerOrder order) {
+        while (true) {
+            ScreenDisplay.clear();
+            ScreenDisplay.boxTop("YOUR ORDER");
+            if (order.isEmpty()) {
+                ScreenDisplay.boxCentered("(no items yet)");
+            }
+
+
+            int n = 1;
+            FoodItemNode current = order.getHead();
+            while (current != null) {
+                ScreenDisplay.boxRow(n + ". " + current.itemName, ScreenDisplay.money(current.price));
+                if (!current.addOns.isEmpty()) {
+                    ScreenDisplay.boxWrapped("     + ", current.addOns);
+                }
+                current = current.next;
+                n++;
+
+            }
+            ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxRow("TOTAL", ScreenDisplay.money(order.getTotalPrice()));
+            ScreenDisplay.boxRow("Estimated cooking time", ScreenDisplay.time(order.getTotalCookTime()));
+            ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxText("[1] Confirm order");
+            ScreenDisplay.boxText("[2] Add more items");
+            ScreenDisplay.boxText("[3] Remove an item");
+            ScreenDisplay.boxText("[4] Cancel order");
+            ScreenDisplay.boxBottom();
+
+            int choice = ScreenDisplay.readInt("Select:", 1, 4);
+            if (choice == 1) {
+                if (order.isEmpty()) {
+                    ScreenDisplay.print("Your order is empty. Please add an item first.");
+                    ScreenDisplay.pause();
+                    continue;
+                }
+                order.assignTicketNumber();
+                showReceipt(order);
+                return true;
+            } else if (choice == 2) {
+                return false;
+            } else if (choice == 3) {
+                if (order.isEmpty()) {
+                    continue;
+                }
+                int remove = ScreenDisplay.readInt("Item number to remove (0 = none):", 0, order.getItemCount());
+                if (remove > 0) {
+                    order.removeItem(remove);
+                }
             } else {
-                System.out.println("Invalid selection. Please try again.");
+                return true;
             }
         }
-        scanner.close();
+    }
+
+    private void showReceipt(CustomerOrder order) {
+        ScreenDisplay.clear();
+        ScreenDisplay.boxTop("ORDER CONFIRMED");
+        ScreenDisplay.boxGap();
+        ScreenDisplay.boxCentered("Your order number is");
+        ScreenDisplay.boxCentered("# " + order.customerId);
+        ScreenDisplay.boxGap();
+        ScreenDisplay.boxSeparator();
+        ScreenDisplay.boxRow("Total amount", ScreenDisplay.money(order.getTotalPrice()));
+        ScreenDisplay.boxRow("Estimated waiting time", ScreenDisplay.time(order.getTotalCookTime()));
+        ScreenDisplay.boxSeparator();
+        ScreenDisplay.boxCentered("Thank you for ordering at JMM House!");
+        ScreenDisplay.boxBottom();
+        ScreenDisplay.pause();
     }
 
     public static void main(String[] args) {
