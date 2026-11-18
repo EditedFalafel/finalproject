@@ -16,9 +16,7 @@ public class Tree {
         }
     }
 
-    public Tree() {
-        root = null;
-    }
+    public Tree() { root = null; }
     boolean isEmpty() {
         return root == null;
     }
@@ -105,12 +103,13 @@ public class Tree {
 
     void inorder(){
         inorderRec(root);
+        System.out.println();
     }
 
     void inorderRec(TreeNode root) {
         if (root != null) {
             inorderRec(root.left);
-            System.out.print(root.data + " ");
+            System.out.print(root.data + " " + root.data.getTotalCookTime() + " ");
             inorderRec(root.right);
         }
     }

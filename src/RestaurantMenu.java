@@ -30,36 +30,6 @@ class RestaurantMenu {
         return menu;
     }
 
-    public void Main() {
-        //replace test menu with real menu pls
-        FoodMenu foodMenu = new FoodMenu();
-
-        while (true) {
-            ScreenDisplay.clear();
-            ScreenDisplay.boxTop("J M M   H O U S E");
-            ScreenDisplay.boxGap();
-            ScreenDisplay.boxCentered("Welcome to the JMM House");
-            ScreenDisplay.boxCentered("Ordering System");
-            ScreenDisplay.boxGap();
-            ScreenDisplay.boxSeparator();
-            ScreenDisplay.boxText("[1] Start a new order");
-            ScreenDisplay.boxText("[0] Exit");
-            ScreenDisplay.boxBottom();
-
-            int choice = ScreenDisplay.readInt("Select:", 0, 1);
-
-            if (choice == 1) {
-                Menu(new CustomerOrder(), foodMenu);
-            } else {
-                ScreenDisplay.blank();
-                ScreenDisplay.print("Thank you! See you again at JMM House.");
-                ScreenDisplay.blank();
-                return;
-            }
-
-        }
-    }
-
     // customer ordering screens
     public void Menu(CustomerOrder currentOrder, FoodMenu foodMenu) {
         String[] categories = foodMenu.getCategoryNames();
@@ -149,7 +119,6 @@ class RestaurantMenu {
                 ScreenDisplay.boxCentered("(no items yet)");
             }
 
-
             int n = 1;
             FoodItemNode current = order.getHead();
             while (current != null) {
@@ -161,6 +130,7 @@ class RestaurantMenu {
                 n++;
 
             }
+
             ScreenDisplay.boxSeparator();
             ScreenDisplay.boxRow("TOTAL", ScreenDisplay.money(order.getTotalPrice()));
             ScreenDisplay.boxRow("Estimated cooking time", ScreenDisplay.time(order.getTotalCookTime()));
@@ -180,6 +150,7 @@ class RestaurantMenu {
                 }
                 order.assignTicketNumber();
                 showReceipt(order);
+                new SortOrders().AddOrder(order);
                 return true;
             } else if (choice == 2) {
                 return false;
@@ -211,8 +182,34 @@ class RestaurantMenu {
         ScreenDisplay.boxCentered("Thank you for ordering at JMM House!");
         ScreenDisplay.boxBottom();
         ScreenDisplay.pause();
+    }
 
+    public void Main() {
+        FoodMenu foodMenu = new FoodMenu();
 
+        while (true) {
+            ScreenDisplay.clear();
+            ScreenDisplay.boxTop("J M M   H O U S E");
+            ScreenDisplay.boxGap();
+            ScreenDisplay.boxCentered("Welcome to the JMM House");
+            ScreenDisplay.boxCentered("Ordering System");
+            ScreenDisplay.boxGap();
+            ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxText("[1] Start a new order");
+            ScreenDisplay.boxText("[0] Exit");
+            ScreenDisplay.boxBottom();
+
+            int choice = ScreenDisplay.readInt("Select:", 0, 1);
+
+            if (choice == 1) {
+                Menu(new CustomerOrder(), foodMenu);
+            } else {
+                ScreenDisplay.blank();
+                ScreenDisplay.print("Thank you! See you again at JMM House.");
+                ScreenDisplay.blank();
+                return;
+            }
+        }
     }
 
     public static void main(String[] args) {
