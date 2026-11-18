@@ -21,8 +21,6 @@ public class SortOrders {
         for(CustomerOrder order : orderArr) {
             orderQueue.offer(order);
         }
-
-        System.out.println(Arrays.toString(orderQueue.getArray()));
     }
 
 }
