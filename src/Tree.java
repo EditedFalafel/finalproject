@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tree {
     TreeNode root;
 
@@ -111,6 +114,20 @@ public class Tree {
             inorderRec(root.left);
             System.out.print(root.data + " " + root.data.getTotalCookTime() + " ");
             inorderRec(root.right);
+        }
+    }
+
+    CustomerOrder[] GetArray() {
+        List<CustomerOrder> orders = new ArrayList<>();
+        GetArrayRec(root, orders);
+        return orders.toArray(new CustomerOrder[0]);
+    }
+
+    void GetArrayRec(TreeNode root, List<CustomerOrder> list) {
+        if (root != null) {
+            GetArrayRec(root.left, list);
+            list.add(root.data);
+            GetArrayRec(root.right, list);
         }
     }
 

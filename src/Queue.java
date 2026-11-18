@@ -1,14 +1,11 @@
-package Queue;
-
 public class Queue<T> implements QueueInterface<T> {
     private T[] data;
     private int front;
     private int back;
     private int size;
-    private int capacity;
+    private int capacity = 1;
 
-    public Queue(int capacity) {
-        this.capacity = capacity;
+    public Queue() {
         this.data = (T[]) new Object[capacity];
         this.front = 0;
         this.back = -1;
@@ -17,9 +14,14 @@ public class Queue<T> implements QueueInterface<T> {
 
     @Override
     public void offer(T item) {
-        if (isFull()) {
-            System.out.println("Queue is full.");
-            return;
+        if (size == capacity) {
+            capacity += 1;
+            T[] tempArray = (T[]) new Object[capacity];
+
+            for(int i = 0; i < size; i++) {
+                tempArray[i] = data[i];
+            }
+            data = tempArray;
         }
         back = (back + 1) % capacity;
         data[back] = item;
@@ -35,6 +37,7 @@ public class Queue<T> implements QueueInterface<T> {
         data[front] = null;
         front = (front + 1) % capacity;
         size--;
+
         return temp;
     }
 
@@ -54,6 +57,13 @@ public class Queue<T> implements QueueInterface<T> {
         return data[back];
     }
 
+    public T[] getArray() {
+        if (isEmpty()) {
+            return null;
+        }
+        return data;
+    }
+
     @Override
     public int size() {
         return size;
@@ -62,10 +72,5 @@ public class Queue<T> implements QueueInterface<T> {
     @Override
     public boolean isEmpty() {
         return size == 0;
-    }
-
-    @Override
-    public boolean isFull() {
-        return size == capacity;
     }
 }
