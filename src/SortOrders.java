@@ -23,4 +23,7 @@ public class SortOrders {
         }
     }
 
+    public Queue<CustomerOrder> getOrderQueue() {
+        return orderQueue;
+    }
 }
