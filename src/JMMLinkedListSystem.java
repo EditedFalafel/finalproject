@@ -19,6 +19,10 @@ class CustomerOrder {
     public int customerId; // 0 until confirmed
     private static int customerCounter = 1;
 
+    boolean seniorOrPwd = false;
+    double vatRate = 0.12;
+    double discountRate = 0.20;
+
     public CustomerOrder() {
         this.customerId = 0;
     }
@@ -113,6 +117,31 @@ class CustomerOrder {
             current = current.next;
         }
         return total;
+    }
+
+
+    public void setSeniorOrPwd(boolean value) {
+        seniorOrPwd = value;
+    }
+
+    public boolean isSeniorOrPwd() {
+        return seniorOrPwd;
+    }
+
+    // 20% off for senior or PWD
+    public double getDiscount() {
+        if (seniorOrPwd) {
+            return getTotalPrice() * discountRate;
+        }
+        return 0;
+    }
+
+    public double getVat() {
+        return (getTotalPrice() - getDiscount()) * vatRate;
+    }
+
+    public double getFinalTotal() {
+        return getTotalPrice() - getDiscount() + getVat();
     }
 
     @Override
