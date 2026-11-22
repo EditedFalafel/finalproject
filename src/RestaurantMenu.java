@@ -132,7 +132,7 @@ class RestaurantMenu {
             }
 
             ScreenDisplay.boxSeparator();
-            ScreenDisplay.boxRow("TOTAL", ScreenDisplay.money(order.getTotalPrice()));
+            ScreenDisplay.boxRow("SUBTOTAL", ScreenDisplay.money(order.getTotalPrice()));
             ScreenDisplay.boxRow("Estimated cooking time", ScreenDisplay.time(order.getTotalCookTime()));
             ScreenDisplay.boxSeparator();
             ScreenDisplay.boxText("[1] Confirm order");
@@ -148,6 +148,7 @@ class RestaurantMenu {
                     ScreenDisplay.pause();
                     continue;
                 }
+                askDiscount(order);
                 order.assignTicketNumber();
                 showReceipt(order);
                 new SortOrders().AddOrder(order);
@@ -168,6 +169,24 @@ class RestaurantMenu {
         }
     }
 
+
+    // asks if senior or PWD
+    private void askDiscount(CustomerOrder order) {
+        ScreenDisplay.clear();
+        ScreenDisplay.boxTop("DISCOUNT");
+        ScreenDisplay.boxCentered("Senior Citizen or PWD?");
+        ScreenDisplay.boxCentered("(20% discount)");
+        ScreenDisplay.boxSeparator();
+        ScreenDisplay.boxText("[1] Yes");
+        ScreenDisplay.boxText("[2] No");
+        ScreenDisplay.boxBottom();
+
+        int choice = ScreenDisplay.readInt("Select:", 1, 2);
+        if (choice == 1) {
+            order.setSeniorOrPwd(true);
+        }
+    }
+
     private void showReceipt(CustomerOrder order) {
         ScreenDisplay.clear();
         ScreenDisplay.boxTop("ORDER CONFIRMED");
@@ -176,8 +195,12 @@ class RestaurantMenu {
         ScreenDisplay.boxCentered("# " + order.customerId);
         ScreenDisplay.boxGap();
         ScreenDisplay.boxSeparator();
-        ScreenDisplay.boxRow("Total amount", ScreenDisplay.money(order.getTotalPrice()));
-        ScreenDisplay.boxRow("Estimated waiting time", ScreenDisplay.time(order.getTotalCookTime()));
+        ScreenDisplay.boxRow("Subtotal", ScreenDisplay.money(order.getTotalPrice()));
+        if (order.isSeniorOrPwd()) {
+            ScreenDisplay.boxRow("Discount (20%)", "-" + ScreenDisplay.money(order.getDiscount()));
+        }
+        ScreenDisplay.boxRow("VAT (12%)", ScreenDisplay.money(order.getVat()));
+        ScreenDisplay.boxRow("TOTAL", ScreenDisplay.money(order.getFinalTotal()));        ScreenDisplay.boxRow("Estimated waiting time", ScreenDisplay.time(order.getTotalCookTime()));
         ScreenDisplay.boxSeparator();
         ScreenDisplay.boxCentered("Thank you for ordering at JMM House!");
         ScreenDisplay.boxBottom();
