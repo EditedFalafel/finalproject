@@ -322,6 +322,7 @@ public class AdminView {
                 if (served == null) {
                     ScreenDisplay.print("No orders in queue.");
                 } else {
+                    SalesReport.addSale(served);
                     ScreenDisplay.print("Completed & served Order #" + served.customerId + ".");
                 }
                 ScreenDisplay.pause();

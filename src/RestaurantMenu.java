@@ -151,7 +151,6 @@ class RestaurantMenu {
                 IngredientInventory.deductOrder(order);
                 showReceipt(order);
                 new SortOrders().AddOrder(order);
-                SalesReport.addSale(order);
                 return true;
             } else if (choice == 2) {
                 return false;
