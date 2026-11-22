@@ -102,14 +102,13 @@ class RestaurantMenu {
         ScreenDisplay.clear();
         ScreenDisplay.boxTop("QUANTITY");
         ScreenDisplay.boxCentered(item.getName());
-        ScreenDisplay.boxRow("Unit Price:", ScreenDisplay.money(item.getPrice())); 
+        ScreenDisplay.boxRow("Unit Price:", ScreenDisplay.money(item.getPrice()));
         ScreenDisplay.boxSeparator();
         ScreenDisplay.boxText("[0] Cancel item"); //NAMTAN RAGEBAITER
         ScreenDisplay.boxBottom();
 
-        return ScreenDisplay.readInt("Enter quantity:", 0, 99); //Napipikon ako 
+        return ScreenDisplay.readInt("Enter quantity:", 0, 99); //Napipikon ako
     }
-
 
     private boolean reviewOrder(CustomerOrder order) {
         while (true) {
@@ -128,7 +127,6 @@ class RestaurantMenu {
                 }
                 current = current.next;
                 n++;
-
             }
 
             ScreenDisplay.boxSeparator();
@@ -150,6 +148,7 @@ class RestaurantMenu {
                 }
                 askDiscount(order);
                 order.assignTicketNumber();
+                IngredientInventory.deductOrder(order);
                 showReceipt(order);
                 new SortOrders().AddOrder(order);
                 SalesReport.addSale(order);
@@ -169,7 +168,6 @@ class RestaurantMenu {
             }
         }
     }
-
 
     // asks if senior or PWD
     private void askDiscount(CustomerOrder order) {
@@ -201,7 +199,8 @@ class RestaurantMenu {
             ScreenDisplay.boxRow("Discount (20%)", "-" + ScreenDisplay.money(order.getDiscount()));
         }
         ScreenDisplay.boxRow("VAT (12%)", ScreenDisplay.money(order.getVat()));
-        ScreenDisplay.boxRow("TOTAL", ScreenDisplay.money(order.getFinalTotal()));        ScreenDisplay.boxRow("Estimated waiting time", ScreenDisplay.time(order.getTotalCookTime()));
+        ScreenDisplay.boxRow("TOTAL", ScreenDisplay.money(order.getFinalTotal()));
+        ScreenDisplay.boxRow("Estimated waiting time", ScreenDisplay.time(order.getTotalCookTime()));
         ScreenDisplay.boxSeparator();
         ScreenDisplay.boxCentered("Thank you for ordering at JMM House!");
         ScreenDisplay.boxBottom();
@@ -210,6 +209,7 @@ class RestaurantMenu {
 
     public void Main() {
         FoodMenu foodMenu = new FoodMenu();
+        IngredientInventory.initializeFromMenu(foodMenu);
 
         while (true) {
             ScreenDisplay.clear();
@@ -220,13 +220,16 @@ class RestaurantMenu {
             ScreenDisplay.boxGap();
             ScreenDisplay.boxSeparator();
             ScreenDisplay.boxText("[1] Start a new order");
+            ScreenDisplay.boxText("[2] Admin View");
             ScreenDisplay.boxText("[0] Exit");
             ScreenDisplay.boxBottom();
 
-            int choice = ScreenDisplay.readInt("Select:", 0, 1);
+            int choice = ScreenDisplay.readInt("Select:", 0, 2);
 
             if (choice == 1) {
                 Menu(new CustomerOrder(), foodMenu);
+            } else if (choice == 2) {
+                AdminView.menu(foodMenu);
             } else {
                 SalesReport.display();
                 ScreenDisplay.blank();
