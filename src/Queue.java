@@ -15,13 +15,16 @@ public class Queue<T> implements QueueInterface<T> {
     @Override
     public void offer(T item) {
         if (size == capacity) {
+            int oldCapacity = capacity;
             capacity += 1;
             T[] tempArray = (T[]) new Object[capacity];
 
-            for(int i = 0; i < size; i++) {
-                tempArray[i] = data[i];
+            for (int i = 0; i < size; i++) {
+                tempArray[i] = data[(front + i) % oldCapacity];
             }
             data = tempArray;
+            front = 0;
+            back = size - 1;
         }
         back = (back + 1) % capacity;
         data[back] = item;
