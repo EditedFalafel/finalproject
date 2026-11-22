@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FoodMenu {
-    private final String[] categoryNames = { //I would like to thank GMMTV Mascots for keeping my sanity
+    private final String[] categoryNames = {
             "Burgers",
             "Chicken",
             "Sides",
@@ -27,26 +27,21 @@ public class FoodMenu {
     }
 
     public static String resolveFilePath(String fileName) {
-        // 1. Check project working directory
         File rootFile = new File(fileName);
         if (rootFile.exists()) {
             return rootFile.getPath();
         }
-
 
         File srcFile = new File("src", fileName);
         if (srcFile.exists()) {
             return srcFile.getPath();
         }
 
-// I'm not a bear. I'm not a polar bear
-//I'm not a whale. I'm not an orca whale
         File found = searchDirectory(new File(System.getProperty("user.dir")), fileName, 0);
         if (found != null) {
             return found.getPath();
         }
 
-        // May Galit sakin ang files
         try {
             URL resource = FoodMenu.class.getClassLoader().getResource(fileName);
             if (resource != null && "file".equalsIgnoreCase(resource.getProtocol())) {
@@ -66,11 +61,7 @@ public class FoodMenu {
         if (files == null) {
             return null;
         }
-//Do you know who I am? Do you know that?
-//I am Polcasan, san san san san
-//I love everyone, one one one one
-//I am Polcasan, san san san san
-//I love everyone. I am Polcasan
+
         for (File f : files) {
             if (f.isFile() && f.getName().equalsIgnoreCase(targetName)) {
                 return f;
@@ -113,7 +104,6 @@ public class FoodMenu {
         }
     }
 
-    // Interactive add-on selector called during customer ordering
     public static String chooseAddOns(MenuItem item) {
         if (item == null || item.getIngredients() == null) {
             return "";
@@ -154,10 +144,7 @@ public class FoodMenu {
             if (choice == 0) {
                 break;
             }
-//I want to see you smile
-//Oh my love
-//And I will be your sunshine
-//I’m MUVMUV
+
             int idx = choice - 1;
             if (!selected[idx] && IngredientInventory.getQuantity(validOptions.get(idx)) <= 0) {
                 ScreenDisplay.print(validOptions.get(idx) + " is currently out of stock.");
