@@ -85,7 +85,7 @@ public class AdminView {
             ingredients = cleaned.toArray(new String[0]);
         }
 
-        MenuItem newItem = new MenuItem(name, price, cookTime, ingredients); //Namtan's Cover of WOW Bangkok is keeping me ALIVE RN
+        MenuItem newItem = new MenuItem(name, price, cookTime, ingredients);
         foodMenu.addItem(catIndex, newItem);
         saveCategoryToFile(categories[catIndex], foodMenu.getItems(catIndex));
 
@@ -160,15 +160,12 @@ public class AdminView {
         ScreenDisplay.pause();
     }
 
-    // This code is Lunar and Jewel and Im Namtan and Janhae
+    // Persists updated category items back to Burgers.txt, Chicken.txt, etc.
     private static void saveCategoryToFile(String categoryName, List<MenuItem> items) {
         if (categoryName == null || items == null) return;
 
         String fileName = categoryName.trim() + ".txt";
-        File target = new File(fileName);
-        if (!target.exists() && new File("src/" + fileName).exists()) {
-            target = new File("src/" + fileName);
-        }
+        File target = new File(FoodMenu.resolveFilePath(fileName));
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(target, false))) {
             for (MenuItem item : items) {
