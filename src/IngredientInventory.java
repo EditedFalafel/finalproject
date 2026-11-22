@@ -4,7 +4,7 @@ import java.util.List;
 public class IngredientInventory {
     private static final List<String> names = new ArrayList<>();
     private static final List<Integer> quantities = new ArrayList<>();
-    private static final int DEFAULT_INITIAL_STOCK = 50;
+    private static final int DEFAULT_INITIAL_STOCK = 20;
     public static final int LOW_STOCK_THRESHOLD = 5;
 //khun mae kha Lunar is here
 //nong yai cha Lunar is here
