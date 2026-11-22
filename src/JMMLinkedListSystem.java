@@ -3,13 +3,19 @@ class FoodItemNode {
     double cookTime;
     double price;
     String addOns;
+    String[] ingredients;
     FoodItemNode next;
 
     public FoodItemNode(String itemName, double cookTime, double price) {
+        this(itemName, cookTime, price, new String[0]);
+    }
+
+    public FoodItemNode(String itemName, double cookTime, double price, String[] ingredients) {
         this.itemName = itemName;
         this.cookTime = cookTime;
         this.price = price;
         this.addOns = "";
+        this.ingredients = ingredients != null ? ingredients : new String[0];
         this.next = null;
     }
 }
@@ -20,6 +26,7 @@ class CustomerOrder {
     private static int customerCounter = 1;
 
     boolean seniorOrPwd = false;
+    boolean expedited = false;
     double vatRate = 0.12;
     double discountRate = 0.20;
 
@@ -55,7 +62,12 @@ class CustomerOrder {
 
     // Adds order
     public void addFoodItem(MenuItem item) {
-        FoodItemNode newNode = new FoodItemNode(item.getName(), item.getCookTime(), item.getPrice());
+        FoodItemNode newNode = new FoodItemNode(
+                item.getName(),
+                item.getCookTime(),
+                item.getPrice(),
+                item.getIngredients()
+        );
         if (head == null) {
             head = newNode;
         } else {
@@ -119,13 +131,20 @@ class CustomerOrder {
         return total;
     }
 
-
     public void setSeniorOrPwd(boolean value) {
         seniorOrPwd = value;
     }
 
     public boolean isSeniorOrPwd() {
         return seniorOrPwd;
+    }
+
+    public void setExpedited(boolean value) {
+        expedited = value;
+    }
+
+    public boolean isExpedited() {
+        return expedited;
     }
 
     // 20% off for senior or PWD
@@ -146,6 +165,6 @@ class CustomerOrder {
 
     @Override
     public String toString() {
-        return "Order #" + customerId;
+        return "Order #" + customerId + (expedited ? " [EXPEDITED]" : "");
     }
 }
