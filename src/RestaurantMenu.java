@@ -152,6 +152,7 @@ class RestaurantMenu {
                 order.assignTicketNumber();
                 showReceipt(order);
                 new SortOrders().AddOrder(order);
+                SalesReport.addSale(order);
                 return true;
             } else if (choice == 2) {
                 return false;
@@ -227,6 +228,7 @@ class RestaurantMenu {
             if (choice == 1) {
                 Menu(new CustomerOrder(), foodMenu);
             } else {
+                SalesReport.display();
                 ScreenDisplay.blank();
                 ScreenDisplay.print("Thank you! See you again at JMM House.");
                 ScreenDisplay.blank();
