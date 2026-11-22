@@ -81,7 +81,6 @@ public class ScreenDisplay {
             String lead = (i == 0) ? prefix : " ".repeat(prefix.length());
             boxLine(lead + lines.get(i));
         }
-
     }
 
     public static void boxCentered(String text) {
@@ -158,15 +157,42 @@ public class ScreenDisplay {
                 if (value >= min && value <= max) {
                     return value;
                 }
-
-
             } catch (NumberFormatException ignored) {
             }
 
-
             print("Invalid input. Please enter a number from " + min + " to " + max + ".");
         }
+    }
 
+    public static String readString(String prompt) {
+        while (true) {
+            System.out.print(center(prompt + " "));
+            String line = in.nextLine().trim();
+            if (!line.isEmpty()) {
+                return line;
+            }
+            print("Input cannot be blank. Please try again.");
+        }
+    }
+
+    public static String readOptionalString(String prompt) {
+        System.out.print(center(prompt + " "));
+        return in.nextLine().trim();
+    }
+
+    public static double readDouble(String prompt, double min, double max) {
+        while (true) {
+            System.out.print(center(prompt + " "));
+            String line = in.nextLine().trim();
+            try {
+                double value = Double.parseDouble(line);
+                if (value >= min && value <= max) {
+                    return value;
+                }
+            } catch (NumberFormatException ignored) {
+            }
+            print("Invalid input. Please enter a number from " + min + " to " + max + ".");
+        }
     }
 
     public static void pause() {
