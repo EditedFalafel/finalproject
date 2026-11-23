@@ -3,3 +3,4 @@ Cheeseburger; 135.50; 8; {Pickles, Onions, Cheese, Tomatoes, Lettuce, Extra Patt
 Double Cheeseburger; 150.00; 10; {Pickles, Onions, Cheese, Tomatoes, Lettuce, Extra Patty, Special Sauce}
 Bacon Burger; 165.75; 10; {Pickles, Onions, Cheese, Tomatoes, Lettuce, Extra Patty, Special Sauce}
 Chicken Burger; 112.00; 9; {Pickles, Onions, Cheese, Tomatoes, Lettuce, Extra Patty, Special Sauce}
+burgers; 25.00; 8; {onions}
