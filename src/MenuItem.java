@@ -2,9 +2,9 @@ public class MenuItem {
     private double price;
     private String name;
     private double cookTime;
-    private String[] customizableIngredients;
+    private AddOn[] customizableIngredients;
 
-    public MenuItem(String name, double price,  double cookTime, String[] ingredients) {
+    public MenuItem(String name, double price,  double cookTime, AddOn[] ingredients) {
         this.name = name;
         this.cookTime = cookTime;
         this.price = price;
@@ -23,7 +23,7 @@ public class MenuItem {
         return cookTime;
     }
 
-    public String[] getIngredients() {
+    public AddOn[] getIngredients() {
         return customizableIngredients;
     }
 }
