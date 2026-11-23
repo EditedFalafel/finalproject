@@ -70,19 +70,19 @@ public class AdminView {
         String name = ScreenDisplay.readString("Enter item name:");
         double price = ScreenDisplay.readDouble("Enter price (Php):", 1.0, 10000.0);
         double cookTime = ScreenDisplay.readDouble("Enter cook time (mins):", 0.5, 180.0);
-        String rawIngredients = ScreenDisplay.readOptionalString("Add-on ingredients (comma-separated, or blank):");
+        String rawIngredients = ScreenDisplay.readOptionalString("Add-ons (Name:price, comma-separated, or blank):");
 
-        String[] ingredients;
+        AddOn[] ingredients;
         if (rawIngredients.isEmpty()) {
-            ingredients = new String[0];
+            ingredients = new AddOn[0];
         } else {
-            List<String> cleaned = new ArrayList<>();
+            List<AddOn> cleaned = new ArrayList<>();
             for (String part : rawIngredients.split(",")) {
                 if (!part.trim().isEmpty()) {
-                    cleaned.add(part.trim());
+                    cleaned.add(AddOn.parse(part));
                 }
             }
-            ingredients = cleaned.toArray(new String[0]);
+            ingredients = cleaned.toArray(new AddOn[0]);
         }
 
         MenuItem newItem = new MenuItem(name, price, cookTime, ingredients);
@@ -175,9 +175,9 @@ public class AdminView {
 
                 List<String> validIngs = new ArrayList<>();
                 if (item.getIngredients() != null) {
-                    for (String ing : item.getIngredients()) {
-                        if (ing != null && !ing.trim().isEmpty()) {
-                            validIngs.add(ing.trim());
+                    for (AddOn ing : item.getIngredients()) {
+                        if (ing != null && !ing.getName().trim().isEmpty()) {
+                            validIngs.add(ing.toFileString());
                         }
                     }
                 }
