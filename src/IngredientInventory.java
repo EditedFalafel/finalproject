@@ -6,7 +6,7 @@ public class IngredientInventory {
     private static final List<Integer> quantities = new ArrayList<>();
     private static final int DEFAULT_INITIAL_STOCK = 20;
     public static final int LOW_STOCK_THRESHOLD = 5;
-//khun mae kha Lunar is here
+    //khun mae kha Lunar is here
 //nong yai cha Lunar is here
 //nong ta cha Lunar is here
 //muan choi muan choi aya khoi aya khoi
@@ -22,6 +22,15 @@ public class IngredientInventory {
                 registerIngredients(item.getIngredients(), DEFAULT_INITIAL_STOCK);
             }
         }
+    }
+
+    public static void registerIngredients(AddOn[] addOns, int initialQty) {
+        if (addOns == null) return;
+        String[] names = new String[addOns.length];
+        for (int i = 0; i < addOns.length; i++) {
+            names[i] = addOns[i].getName();
+        }
+        registerIngredients(names, initialQty);
     }
 
     public static void registerIngredients(String[] ingredients, int initialQty) {
@@ -53,10 +62,8 @@ public class IngredientInventory {
         if (order == null) return;
         FoodItemNode current = order.getHead();
         while (current != null) {
-            if (current.addOns != null && !current.addOns.isEmpty()) {
-                for (String addOn : current.addOns.split(",")) {
-                    decrementOne(addOn);
-                }
+            for (AddOn addOn : current.chosenAddOns) {
+                decrementOne(addOn.getName());
             }
             current = current.next;
         }
