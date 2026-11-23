@@ -104,39 +104,44 @@ public class FoodMenu {
         }
     }
 
-    public static String chooseAddOns(MenuItem item) {
+    public static ArrayList<AddOn> chooseAddOns(MenuItem item) {
+        ArrayList<AddOn> chosen = new ArrayList<>();
         if (item == null || item.getIngredients() == null) {
-            return "";
+            return chosen;
         }
 
-        List<String> validOptions = new ArrayList<>();
-        for (String raw : item.getIngredients()) {
-            if (raw != null && !raw.trim().isEmpty()) {
-                validOptions.add(raw.trim());
+        List<AddOn> validOptions = new ArrayList<>();
+        for (AddOn raw : item.getIngredients()) {
+            if (raw != null && !raw.getName().trim().isEmpty()) {
+                validOptions.add(raw);
             }
         }
 
         if (validOptions.isEmpty()) {
-            return "";
+            return chosen;
         }
 
-        boolean[] selected = new boolean[validOptions.size()];
-
         while (true) {
+            double addOnTotal = 0;
+            for (AddOn a : chosen) {
+                addOnTotal += a.getPrice();
+            }
+
             ScreenDisplay.clear();
             ScreenDisplay.boxTop("CUSTOMIZE ADD-ONS");
             ScreenDisplay.boxCentered(item.getName());
             ScreenDisplay.boxSeparator();
 
             for (int i = 0; i < validOptions.size(); i++) {
-                String ing = validOptions.get(i);
-                int stock = IngredientInventory.getQuantity(ing);
-                String check = selected[i] ? "[x] " : "[ ] ";
+                AddOn ing = validOptions.get(i);
+                int stock = IngredientInventory.getQuantity(ing.getName());
+                String check = chosen.contains(ing) ? "[x] " : "[ ] ";
                 String status = (stock <= 0) ? "OUT OF STOCK" : (stock + " left");
-                ScreenDisplay.boxRow("[" + (i + 1) + "] " + check + ing, status);
+                ScreenDisplay.boxRow("[" + (i + 1) + "] " + check + ing.getName(), priceLabel(ing) + "  " + status);
             }
 
             ScreenDisplay.boxSeparator();
+            ScreenDisplay.boxRow("Add-ons total", ScreenDisplay.money(addOnTotal));
             ScreenDisplay.boxText("[0] Done / Confirm add-ons");
             ScreenDisplay.boxBottom();
 
@@ -145,22 +150,25 @@ public class FoodMenu {
                 break;
             }
 
-            int idx = choice - 1;
-            if (!selected[idx] && IngredientInventory.getQuantity(validOptions.get(idx)) <= 0) {
-                ScreenDisplay.print(validOptions.get(idx) + " is currently out of stock.");
+            AddOn picked = validOptions.get(choice - 1);
+            if (!chosen.contains(picked) && IngredientInventory.getQuantity(picked.getName()) <= 0) {
+                ScreenDisplay.print(picked.getName() + " is currently out of stock.");
                 ScreenDisplay.pause();
+            } else if (chosen.contains(picked)) {
+                chosen.remove(picked);
             } else {
-                selected[idx] = !selected[idx];
+                chosen.add(picked);
             }
         }
 
-        List<String> chosen = new ArrayList<>();
-        for (int i = 0; i < validOptions.size(); i++) {
-            if (selected[i]) {
-                chosen.add(validOptions.get(i));
-            }
-        }
+        return chosen;
+    }
 
-        return String.join(", ", chosen);
+    // "+Php 15.00" or "Free"
+    private static String priceLabel(AddOn a) {
+        if (a.getPrice() == 0) {
+            return "Free";
+        }
+        return "+" + ScreenDisplay.money(a.getPrice());
     }
 }
