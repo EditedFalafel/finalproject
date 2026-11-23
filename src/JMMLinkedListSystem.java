@@ -1,21 +1,24 @@
+import java.util.ArrayList;
+
 class FoodItemNode {
     String itemName;
     double cookTime;
     double price;
     String addOns;
-    String[] ingredients;
+    AddOn[] ingredients;
+    ArrayList<AddOn> chosenAddOns = new ArrayList<>();
     FoodItemNode next;
 
     public FoodItemNode(String itemName, double cookTime, double price) {
-        this(itemName, cookTime, price, new String[0]);
+        this(itemName, cookTime, price, new AddOn[0]);
     }
 
-    public FoodItemNode(String itemName, double cookTime, double price, String[] ingredients) {
+    public FoodItemNode(String itemName, double cookTime, double price, AddOn[] ingredients) {
         this.itemName = itemName;
         this.cookTime = cookTime;
         this.price = price;
         this.addOns = "";
-        this.ingredients = ingredients != null ? ingredients : new String[0];
+        this.ingredients = ingredients != null ? ingredients : new AddOn[0];
         this.next = null;
     }
 }
@@ -80,13 +83,25 @@ class CustomerOrder {
     }
 
     // Adds order with chosen add-ons
-    public void addFoodItem(MenuItem item, String addOns) {
+    public void addFoodItem(MenuItem item, ArrayList<AddOn> addOns) {
         addFoodItem(item);
         FoodItemNode current = head;
         while (current.next != null) {
             current = current.next;
         }
-        current.addOns = addOns;
+
+        // price of this item becomes menu price + add-ons, e.g. "Cheese (+Php 10.00), Ice"
+        ArrayList<String> labels = new ArrayList<>();
+        for (AddOn a : addOns) {
+            current.price += a.getPrice();
+            if (a.getPrice() > 0) {
+                labels.add(a.getName() + " (+" + ScreenDisplay.money(a.getPrice()) + ")");
+            } else {
+                labels.add(a.getName());
+            }
+        }
+        current.addOns = String.join(", ", labels);
+        current.chosenAddOns = addOns;
     }
 
     // removes item (starts at 1)
@@ -155,8 +170,12 @@ class CustomerOrder {
         return 0;
     }
 
+    // 12% VAT is added on top of the price, senior/PWD pay no VAT
     public double getVat() {
-        return (getTotalPrice() - getDiscount()) * vatRate;
+        if (seniorOrPwd) {
+            return 0;
+        }
+        return getTotalPrice() * vatRate;
     }
 
     public double getFinalTotal() {
